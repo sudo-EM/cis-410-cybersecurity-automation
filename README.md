@@ -28,4 +28,4 @@ infrastructure as code, and cloud deployment.
 
 ## Fun Fact
 
-[I'm a music producer and Crimson Desert is cool.]
+[I'm a music producer and Crimson Desert is cool .]
