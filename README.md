@@ -2,13 +2,13 @@
 
 ## About Me
 
-- **Name:** [Your Full Name]
+- **Name:** [Eli Medina]
 
 - **GitHub Username:** [Your GitHub Username]
 
-- **Major:** [Your Major]
+- **Major:** [CyberSecurity]
 
-- **Semester:** [Current Semester]
+- **Semester:** [Spring 2026]
 
 ## About This Course
 
@@ -20,12 +20,12 @@ infrastructure as code, and cloud deployment.
 
 ## What I Hope to Learn
 
-- [Add something you want to learn in this course]
+- [More about DevOps and the benefits of it for a modern application]
 
-- [Add another goal]
+- [Leaning more about Automation]
 
-- [Add a third goal]
+- [Jobs Demands]
 
 ## Fun Fact
 
-[Share one fun fact about yourself]
+[I'm a music producer and Crimson Desert is cool.]
