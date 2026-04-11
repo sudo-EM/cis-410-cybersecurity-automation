@@ -29,3 +29,5 @@ infrastructure as code, and cloud deployment.
 ## Fun Fact
 
 [I'm a music producer and Crimson Desert is cool .]
+
+Last Updated: Week 2 hostname test
