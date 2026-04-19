@@ -44,8 +44,11 @@ jobs:
             ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} << 'EOF'
             set -e
             echo "=== Logged in as: $(whoami) ==="
+            echo "=== Docker version ==="
             docker --version
+            echo "=== Docker Compose version ==="
             docker compose version
+            echo "=== Deployment directory ==="
             ls -la /opt/app
             echo "=== Dev server is ready for deployment ==="
           EOF
