@@ -17,59 +17,21 @@
 name: "Deploy — Staging"
 
 on:
-
   workflow_dispatch:
 
-    inputs:
-
-      reason:
-
-        description: 'Reason for this deployment (e.g. QA approved, ticket PROJ-142)'
-
-        required: false    # Optional for staging — required: true on production
-
 jobs:
-
   deploy:
-
-    name: "Deploy to Staging"
-
     runs-on: self-hosted
 
     steps:
-
-      # Step 1: Check out the code so scp can access the files
-
       - name: Checkout
-
         uses: actions/checkout@v4
 
-      # Step 2: Write the reason to the run log — permanent audit trail entry
-
-      # github.actor = GitHub username of whoever clicked Run workflow
-
-      - name: Log deployment reason
-
-        run: echo "STAGING DEPLOY — ${{ github.event.inputs.reason || 'no reason provided' }} — ${{ github.actor }}"
-
-      # Step 3: Copy app files to /opt/app on yourname-staging
-
-      # Key is written to /tmp, used, then deleted in the same step.
-
       - name: Copy app files to Staging VM
-
         run: |
-
-          echo "${{ secrets.STAGING_SSH_KEY }}" > /tmp/staging_key
-
+          echo "${{ secrets.STAGING_SSH_KEY }}" | tr -d '\r' > /tmp/staging_key
           chmod 600 /tmp/staging_key
-
-          scp -i /tmp/staging_key -o StrictHostKeyChecking=no -r 
-
-            app/ Dockerfile .dockerignore docker-compose.yml 
-
-            ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/app/
-
+          scp -i /tmp/staging_key -o StrictHostKeyChecking=no -r app/ Dockerfile .dockerignore docker-compose.yml "${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/app/"
           rm /tmp/staging_key
 
       # Step 4: Build and start the container
