@@ -68,7 +68,7 @@ jobs:
 
             app/ Dockerfile .dockerignore docker-compose.yml 
 
-            "${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/app/"
+            ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/app/
 
           rm /tmp/staging_key
 
