@@ -56,20 +56,11 @@ jobs:
 
       # Key is written to /tmp, used, then deleted in the same step.
 
-      - name: Copy app files to Staging VM
-
+            - name: Copy app files to Staging VM
         run: |
-
-          echo "${{ secrets.STAGING_SSH_KEY }}" > /tmp/staging_key
-
+          echo "${{ secrets.STAGING_SSH_KEY }}" | tr -d '\r' > /tmp/staging_key
           chmod 600 /tmp/staging_key
-
-          scp -i /tmp/staging_key -o StrictHostKeyChecking=no -r \
-
-            app/ Dockerfile .dockerignore docker-compose.yml \
-
-            ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/app/
-
+          scp -i /tmp/staging_key -o StrictHostKeyChecking=no -r app/ Dockerfile .dockerignore docker-compose.yml "${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}:/opt/app/"
           rm /tmp/staging_key
 
       # Step 4: Build and start the container
