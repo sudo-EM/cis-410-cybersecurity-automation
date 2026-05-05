@@ -49,47 +49,28 @@ jobs:
       # shows 'staging' and the STAGING badge in the top-right corner.
 
       - name: Deploy Flask container on Staging
-
         run: |
-
-          echo "${{ secrets.STAGING_SSH_KEY }}" > /tmp/staging_key
-
+          echo "${{ secrets.STAGING_SSH_KEY }}" | tr -d '\r' > /tmp/staging_key
           chmod 600 /tmp/staging_key
 
-          ssh -i /tmp/staging_key -o StrictHostKeyChecking=no \
-
-            ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} << 'EOF'
-
+          ssh -i /tmp/staging_key -o StrictHostKeyChecking=no "${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }}" << 'EOF'
           set -e
-
           cd /opt/app
 
           export DEPLOY_TIME="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-
           export GITHUB_SHA="${{ github.sha }}"
-
           export GITHUB_REF_NAME="${{ github.ref_name }}"
-
           export HOST_PORT=5001
-
           export ENVIRONMENT=staging
-
-          echo "=== Deploying ${GITHUB_SHA:0:7} to staging (port ${HOST_PORT}) ==="
 
           sudo docker compose down --remove-orphans
 
-          sudo HOST_PORT="${HOST_PORT}" ENVIRONMENT="${ENVIRONMENT}" \
-
-               DEPLOY_TIME="${DEPLOY_TIME}" GITHUB_SHA="${GITHUB_SHA}" \
-
-               GITHUB_REF_NAME="${GITHUB_REF_NAME}" \
-
+          sudo HOST_PORT="$HOST_PORT" ENVIRONMENT="$ENVIRONMENT" \
+               DEPLOY_TIME="$DEPLOY_TIME" GITHUB_SHA="$GITHUB_SHA" \
+               GITHUB_REF_NAME="$GITHUB_REF_NAME" \
                docker compose up -d --build
 
-          echo '=== Staging deploy complete ==='
-
           sudo docker compose ps
-
           EOF
 
           rm /tmp/staging_key
