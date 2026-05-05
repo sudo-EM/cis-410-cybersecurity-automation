@@ -86,7 +86,9 @@ jobs:
           echo "${{ secrets.PROD_SSH_KEY }}" | tr -d '\r' > /tmp/prod_key
           chmod 600 /tmp/prod_key
 
-          ssh -i /tmp/prod_key -o StrictHostKeyChecking=no "${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}" << 'EOF'
+          ssh -i /tmp/prod_key -o StrictHostKeyChecking=no \
+            ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << EOF
+
           set -e
           cd /opt/app
 
@@ -98,10 +100,10 @@ jobs:
 
           sudo docker compose down --remove-orphans
 
-          sudo HOST_PORT="$HOST_PORT" ENVIRONMENT="$ENVIRONMENT" \
-         DEPLOY_TIME="$DEPLOY_TIME" GITHUB_SHA="$GITHUB_SHA" \
-         GITHUB_REF_NAME="$GITHUB_REF_NAME" \
-         docker compose up -d --build
+          sudo HOST_PORT="\$HOST_PORT" ENVIRONMENT="\$ENVIRONMENT" \
+               DEPLOY_TIME="\$DEPLOY_TIME" GITHUB_SHA="\$GITHUB_SHA" \
+               GITHUB_REF_NAME="\$GITHUB_REF_NAME" \
+               docker compose up -d --build
 
           sudo docker compose ps
           EOF
